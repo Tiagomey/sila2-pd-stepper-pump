@@ -1,0 +1,98 @@
+<Feature xmlns="http://www.sila-standard.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Category="core" FeatureVersion="1.0" MaturityLevel="Draft" Originator="unitelabs" SiLA2Version="1.0" xsi:schemaLocation="http://www.sila-standard.org https://gitlab.com/SiLA2/sila_base/raw/master/schema/FeatureDefinition.xsd">
+  <Identifier>PumpControl</Identifier>
+  <DisplayName>Pump Control</DisplayName>
+  <Description>Feature to control a pump via SiLA 2.</Description>
+  <Command>
+    <Identifier>InitPump</Identifier>
+    <DisplayName>Initialize Pump</DisplayName>
+    <Description>Initialize the pump before usage.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>ComPort</Identifier>
+      <DisplayName>Com Port</DisplayName>
+      <Description>Com port to connect PDStepper via Serial</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+  <Command>
+    <Identifier>StartPump</Identifier>
+    <DisplayName>Start Pump</DisplayName>
+    <Description>Start the pump operation.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Start</Identifier>
+      <DisplayName>Start</DisplayName>
+      <Description>Start the pump: true to activate</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+  <Command>
+    <Identifier>StopPump</Identifier>
+    <DisplayName>Stop Pump</DisplayName>
+    <Description>Stop the pump operation.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Stop</Identifier>
+      <DisplayName>Stop</DisplayName>
+      <Description>Stop the pump: true to deactivate</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+  <Command>
+    <Identifier>Suck</Identifier>
+    <DisplayName>Suck Amount</DisplayName>
+    <Description>Suck liquid in ml.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Amount</Identifier>
+      <DisplayName>Amount (ml)</DisplayName>
+      <Description>Amount in milliliters to suck</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+  <Command>
+    <Identifier>Pump</Identifier>
+    <DisplayName>Pump Amount</DisplayName>
+    <Description>Pump liquid in ml.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Amount</Identifier>
+      <DisplayName>Amount (ml)</DisplayName>
+      <Description>Amount in milliliters to pump</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+  <Command>
+    <Identifier>Direction</Identifier>
+    <DisplayName>Set Direction</DisplayName>
+    <Description>Set pump direction: Forward or Backward.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Direction</Identifier>
+      <DisplayName>Direction</DisplayName>
+      <Description>Direction: 'Forward' or 'Backward'</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+  <Property>
+    <Identifier>PumpStatus</Identifier>
+    <DisplayName>Pump Status</DisplayName>
+    <Description>Current status of the pump.</Description>
+    <Observable>Yes</Observable>
+    <DataType>
+      <Basic>String</Basic>
+    </DataType>
+  </Property>
+</Feature>

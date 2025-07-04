@@ -1,0 +1,7 @@
+device: "pd-pump"
+port: 18737
+uuid: "759f07bf-189d-4269-8a6f-b873e07336c0"
+discovery: True
+certificate: "server-cert.pem"
+pkey: "server-key.pem"
+comport: "COM4"

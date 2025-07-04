@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+import "SiLAFramework.proto";
+
+package sila2.unitelabs.core.pumpcontrol.v1;
+
+/* Feature to control a pump via SiLA 2. */
+service PumpControl {
+  /* Initialize the pump before usage. */
+  rpc InitPump (sila2.unitelabs.core.pumpcontrol.v1.InitPump_Parameters) returns (sila2.unitelabs.core.pumpcontrol.v1.InitPump_Responses) {}
+  /* Start the pump operation. */
+  rpc StartPump (sila2.unitelabs.core.pumpcontrol.v1.StartPump_Parameters) returns (sila2.unitelabs.core.pumpcontrol.v1.StartPump_Responses) {}
+  /* Stop the pump operation. */
+  rpc StopPump (sila2.unitelabs.core.pumpcontrol.v1.StopPump_Parameters) returns (sila2.unitelabs.core.pumpcontrol.v1.StopPump_Responses) {}
+  /* Suck liquid in ml. */
+  rpc Suck (sila2.unitelabs.core.pumpcontrol.v1.Suck_Parameters) returns (sila2.unitelabs.core.pumpcontrol.v1.Suck_Responses) {}
+  /* Pump liquid in ml. */
+  rpc Pump (sila2.unitelabs.core.pumpcontrol.v1.Pump_Parameters) returns (sila2.unitelabs.core.pumpcontrol.v1.Pump_Responses) {}
+  /* Set pump direction: Forward or Backward. */
+  rpc Direction (sila2.unitelabs.core.pumpcontrol.v1.Direction_Parameters) returns (sila2.unitelabs.core.pumpcontrol.v1.Direction_Responses) {}
+  /* Current status of the pump. */
+  rpc Subscribe_PumpStatus (sila2.unitelabs.core.pumpcontrol.v1.Subscribe_PumpStatus_Parameters) returns (stream sila2.unitelabs.core.pumpcontrol.v1.Subscribe_PumpStatus_Responses) {}
+}
+
+/* Parameters for InitPump */
+message InitPump_Parameters {
+  sila2.org.silastandard.String ComPort = 1;  /* Com port to connect PDStepper via Serial */
+}
+
+/* Responses of InitPump */
+message InitPump_Responses {
+}
+
+/* Parameters for StartPump */
+message StartPump_Parameters {
+  sila2.org.silastandard.Boolean Start = 1;  /* Start the pump: true to activate */
+}
+
+/* Responses of StartPump */
+message StartPump_Responses {
+}
+
+/* Parameters for StopPump */
+message StopPump_Parameters {
+  sila2.org.silastandard.Boolean Stop = 1;  /* Stop the pump: true to deactivate */
+}
+
+/* Responses of StopPump */
+message StopPump_Responses {
+}
+
+/* Parameters for Suck */
+message Suck_Parameters {
+  sila2.org.silastandard.Real Amount = 1;  /* Amount in milliliters to suck */
+}
+
+/* Responses of Suck */
+message Suck_Responses {
+}
+
+/* Parameters for Pump */
+message Pump_Parameters {
+  sila2.org.silastandard.Real Amount = 1;  /* Amount in milliliters to pump */
+}
+
+/* Responses of Pump */
+message Pump_Responses {
+}
+
+/* Parameters for Direction */
+message Direction_Parameters {
+  sila2.org.silastandard.Boolean Direction = 1;  /* Direction: 'Forward' or 'Backward' */
+}
+
+/* Responses of Direction */
+message Direction_Responses {
+}
+
+/* Parameters for PumpStatus */
+message Subscribe_PumpStatus_Parameters {
+}
+
+/* Responses of PumpStatus */
+message Subscribe_PumpStatus_Responses {
+  sila2.org.silastandard.String PumpStatus = 1;  /* Current status of the pump. */
+}
