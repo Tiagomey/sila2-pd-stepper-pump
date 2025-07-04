@@ -11,7 +11,8 @@ python = "^3.10"
 pyserial = "^3.5"
 py-pd-stepper-pump = "^0.1.0"
 pyyaml = "^6.0.2"
- cerberus = "^1.3.7"
+cerberus = "^1.3.7"
+sila2 = "^0.12.2"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.4.1"
