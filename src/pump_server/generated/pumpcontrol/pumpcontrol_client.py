@@ -13,9 +13,11 @@ if TYPE_CHECKING:
     from typing import Iterable, Optional
 
     from pumpcontrol_types import (
-        Direction_Responses,
-        InitPump_Responses,
+        GetStatus_Responses,
         Pump_Responses,
+        SetAcceleration_Responses,
+        SetVelocity_Responses,
+        SetVoltage_Responses,
         StartPump_Responses,
         StopPump_Responses,
         Suck_Responses,
@@ -33,27 +35,47 @@ class PumpControlClient:
     Current status of the pump.
     """
 
-    def InitPump(
-        self, ComPort: str, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None
-    ) -> InitPump_Responses:
-        """
-        Initialize the pump before usage.
-        """
-        ...
-
     def StartPump(
-        self, Start: bool, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None
+        self, Velocity: int, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None
     ) -> StartPump_Responses:
         """
         Start the pump operation.
         """
         ...
 
-    def StopPump(
-        self, Stop: bool, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None
-    ) -> StopPump_Responses:
+    def StopPump(self, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None) -> StopPump_Responses:
         """
         Stop the pump operation.
+        """
+        ...
+
+    def GetStatus(self, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None) -> GetStatus_Responses:
+        """
+        Get Status Information of the Pump
+        """
+        ...
+
+    def SetVelocity(
+        self, Velocity: float, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None
+    ) -> SetVelocity_Responses:
+        """
+        Set the pumping velocity.
+        """
+        ...
+
+    def SetAcceleration(
+        self, Acceleration: float, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None
+    ) -> SetAcceleration_Responses:
+        """
+        Set the acceleration of the pump.
+        """
+        ...
+
+    def SetVoltage(
+        self, Voltage: int, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None
+    ) -> SetVoltage_Responses:
+        """
+        Set the voltage supplied to stepper Motor(only 5,9,12,15,20 is allowed).
         """
         ...
 
@@ -66,13 +88,5 @@ class PumpControlClient:
     def Pump(self, Amount: float, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None) -> Pump_Responses:
         """
         Pump liquid in ml.
-        """
-        ...
-
-    def Direction(
-        self, Direction: bool, *, metadata: Optional[Iterable[ClientMetadataInstance]] = None
-    ) -> Direction_Responses:
-        """
-        Set pump direction: Forward or Backward.
         """
         ...

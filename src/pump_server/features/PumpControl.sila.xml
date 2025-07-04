@@ -4,46 +4,75 @@
   <Description>Feature to control a pump via SiLA 2.</Description>
 
   <Command>
-    <Identifier>InitPump</Identifier>
-    <DisplayName>Initialize Pump</DisplayName>
-    <Description>Initialize the pump before usage.</Description>
-    <Observable>No</Observable>
-    <Parameter>
-      <Identifier>ComPort</Identifier>
-      <DisplayName>Com Port</DisplayName>
-      <Description>Com port to connect PDStepper via Serial</Description>
-      <DataType>
-        <Basic>String</Basic>
-      </DataType>
-    </Parameter>
-  </Command>
-
-  <Command>
     <Identifier>StartPump</Identifier>
     <DisplayName>Start Pump</DisplayName>
     <Description>Start the pump operation.</Description>
     <Observable>No</Observable>
     <Parameter>
-      <Identifier>Start</Identifier>
-      <DisplayName>Start</DisplayName>
-      <Description>Start the pump: true to activate</Description>
+      <Identifier>Velocity</Identifier>
+      <DisplayName>Velocity</DisplayName>
+      <Description>Start the pump with given Velocity (steps per second)</Description>
       <DataType>
-        <Basic>Boolean</Basic>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+
+<Command>
+  <Identifier>StopPump</Identifier>
+  <DisplayName>Stop Pump</DisplayName>
+  <Description>Stop the pump operation.</Description>
+  <Observable>No</Observable>
+</Command>
+
+<Command>
+  <Identifier>GetStatus</Identifier>
+  <DisplayName>Get Status</DisplayName>
+  <Description>Get Status Information of the Pump</Description>
+  <Observable>No</Observable>
+</Command>
+
+  <Command>
+    <Identifier>SetVelocity</Identifier>
+    <DisplayName>Set Velocity</DisplayName>
+    <Description>Set the pumping velocity.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Velocity</Identifier>
+      <DisplayName>Velocity (steps/s)</DisplayName>
+      <Description>Velocity in steps per second used in Target specific commands</Description>
+      <DataType>
+        <Basic>Real</Basic>
       </DataType>
     </Parameter>
   </Command>
 
   <Command>
-    <Identifier>StopPump</Identifier>
-    <DisplayName>Stop Pump</DisplayName>
-    <Description>Stop the pump operation.</Description>
+    <Identifier>SetAcceleration</Identifier>
+    <DisplayName>Set Acceleration</DisplayName>
+    <Description>Set the acceleration of the pump.</Description>
     <Observable>No</Observable>
     <Parameter>
-      <Identifier>Stop</Identifier>
-      <DisplayName>Stop</DisplayName>
-      <Description>Stop the pump: true to deactivate</Description>
+      <Identifier>Acceleration</Identifier>
+      <DisplayName>Acceleration (steps/s²)</DisplayName>
+      <Description>Acceleration in steps/s²</Description>
       <DataType>
-        <Basic>Boolean</Basic>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+  </Command>
+
+  <Command>
+    <Identifier>SetVoltage</Identifier>
+    <DisplayName>Set Voltage</DisplayName>
+    <Description>Set the voltage supplied to stepper Motor(only 5,9,12,15,20 is allowed).</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Voltage</Identifier>
+      <DisplayName>Voltage (V)</DisplayName>
+      <Description>Target voltage in volts.</Description>
+      <DataType>
+        <Basic>Integer</Basic>
       </DataType>
     </Parameter>
   </Command>
@@ -74,21 +103,6 @@
       <Description>Amount in milliliters to pump</Description>
       <DataType>
         <Basic>Real</Basic>
-      </DataType>
-    </Parameter>
-  </Command>
-
-  <Command>
-    <Identifier>Direction</Identifier>
-    <DisplayName>Set Direction</DisplayName>
-    <Description>Set pump direction: Forward or Backward.</Description>
-    <Observable>No</Observable>
-    <Parameter>
-      <Identifier>Direction</Identifier>
-      <DisplayName>Direction</DisplayName>
-      <Description>Direction: 'Forward' or 'Backward'</Description>
-      <DataType>
-        <Basic>Boolean</Basic>
       </DataType>
     </Parameter>
   </Command>

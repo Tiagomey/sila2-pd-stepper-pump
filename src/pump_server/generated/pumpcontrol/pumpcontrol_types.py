@@ -4,11 +4,6 @@ from __future__ import annotations
 from typing import NamedTuple
 
 
-class InitPump_Responses(NamedTuple):
-
-    pass
-
-
 class StartPump_Responses(NamedTuple):
 
     pass
@@ -19,16 +14,31 @@ class StopPump_Responses(NamedTuple):
     pass
 
 
+class GetStatus_Responses(NamedTuple):
+
+    pass
+
+
+class SetVelocity_Responses(NamedTuple):
+
+    pass
+
+
+class SetAcceleration_Responses(NamedTuple):
+
+    pass
+
+
+class SetVoltage_Responses(NamedTuple):
+
+    pass
+
+
 class Suck_Responses(NamedTuple):
 
     pass
 
 
 class Pump_Responses(NamedTuple):
-
-    pass
-
-
-class Direction_Responses(NamedTuple):
 
     pass

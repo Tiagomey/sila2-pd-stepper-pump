@@ -7,11 +7,12 @@ from typing import TYPE_CHECKING, Optional, Union
 
 from sila2.server import FeatureImplementationBase, MetadataDict
 
-
 from .pumpcontrol_types import (
-    Direction_Responses,
-    InitPump_Responses,
+    GetStatus_Responses,
     Pump_Responses,
+    SetAcceleration_Responses,
+    SetVelocity_Responses,
+    SetVoltage_Responses,
     StartPump_Responses,
     StopPump_Responses,
     Suck_Responses,
@@ -86,36 +87,68 @@ class PumpControlBase(FeatureImplementationBase, ABC):
             raise AttributeError("Observable property PumpStatus has never been set")
 
     @abstractmethod
-    def InitPump(self, ComPort: str, *, metadata: MetadataDict) -> InitPump_Responses:
-        """
-        Initialize the pump before usage.
-
-
-        :param ComPort: Com port to connect PDStepper via Serial
-
-        :param metadata: The SiLA Client Metadata attached to the call
-
-        """
-
-    @abstractmethod
-    def StartPump(self, Start: bool, *, metadata: MetadataDict) -> StartPump_Responses:
+    def StartPump(self, Velocity: int, *, metadata: MetadataDict) -> StartPump_Responses:
         """
         Start the pump operation.
 
 
-        :param Start: Start the pump: true to activate
+        :param Velocity: Start the pump with given Velocity (steps per second)
 
         :param metadata: The SiLA Client Metadata attached to the call
 
         """
 
     @abstractmethod
-    def StopPump(self, Stop: bool, *, metadata: MetadataDict) -> StopPump_Responses:
+    def StopPump(self, *, metadata: MetadataDict) -> StopPump_Responses:
         """
         Stop the pump operation.
 
 
-        :param Stop: Stop the pump: true to deactivate
+        :param metadata: The SiLA Client Metadata attached to the call
+
+        """
+
+    @abstractmethod
+    def GetStatus(self, *, metadata: MetadataDict) -> GetStatus_Responses:
+        """
+        Get Status Information of the Pump
+
+
+        :param metadata: The SiLA Client Metadata attached to the call
+
+        """
+
+    @abstractmethod
+    def SetVelocity(self, Velocity: float, *, metadata: MetadataDict) -> SetVelocity_Responses:
+        """
+        Set the pumping velocity.
+
+
+        :param Velocity: Velocity in steps per second used in Target specific commands
+
+        :param metadata: The SiLA Client Metadata attached to the call
+
+        """
+
+    @abstractmethod
+    def SetAcceleration(self, Acceleration: float, *, metadata: MetadataDict) -> SetAcceleration_Responses:
+        """
+        Set the acceleration of the pump.
+
+
+        :param Acceleration: Acceleration in steps/s²
+
+        :param metadata: The SiLA Client Metadata attached to the call
+
+        """
+
+    @abstractmethod
+    def SetVoltage(self, Voltage: int, *, metadata: MetadataDict) -> SetVoltage_Responses:
+        """
+        Set the voltage supplied to stepper Motor(only 5,9,12,15,20 is allowed).
+
+
+        :param Voltage: Target voltage in volts.
 
         :param metadata: The SiLA Client Metadata attached to the call
 
@@ -140,18 +173,6 @@ class PumpControlBase(FeatureImplementationBase, ABC):
 
 
         :param Amount: Amount in milliliters to pump
-
-        :param metadata: The SiLA Client Metadata attached to the call
-
-        """
-
-    @abstractmethod
-    def Direction(self, Direction: bool, *, metadata: MetadataDict) -> Direction_Responses:
-        """
-        Set pump direction: Forward or Backward.
-
-
-        :param Direction: Direction: 'Forward' or 'Backward'
 
         :param metadata: The SiLA Client Metadata attached to the call
 

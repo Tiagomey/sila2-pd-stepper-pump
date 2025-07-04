@@ -3,9 +3,11 @@ from .pumpcontrol_base import PumpControlBase
 from .pumpcontrol_client import PumpControlClient
 from .pumpcontrol_feature import PumpControlFeature
 from .pumpcontrol_types import (
-    Direction_Responses,
-    InitPump_Responses,
+    GetStatus_Responses,
     Pump_Responses,
+    SetAcceleration_Responses,
+    SetVelocity_Responses,
+    SetVoltage_Responses,
     StartPump_Responses,
     StopPump_Responses,
     Suck_Responses,
@@ -15,10 +17,12 @@ __all__ = [
     "PumpControlBase",
     "PumpControlFeature",
     "PumpControlClient",
-    "InitPump_Responses",
     "StartPump_Responses",
     "StopPump_Responses",
+    "GetStatus_Responses",
+    "SetVelocity_Responses",
+    "SetAcceleration_Responses",
+    "SetVoltage_Responses",
     "Suck_Responses",
     "Pump_Responses",
-    "Direction_Responses",
 ]

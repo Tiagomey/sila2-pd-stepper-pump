@@ -4,8 +4,8 @@ from typing import Optional
 
 from sila2.server import MetadataDict
 
-from ..generated.pumpcontrol import InitPump_Responses, StopPump_Responses,\
-     StartPump_Responses, Pump_Responses, Suck_Responses, Direction_Responses
+from ..generated.pumpcontrol import StopPump_Responses, StartPump_Responses, Pump_Responses, Suck_Responses, \
+    SetAcceleration_Responses, SetVelocity_Responses, SetVoltage_Responses, GetStatus_Responses
 
 from ..generated.pumpcontrol.pumpcontrol_base import PumpControlBase
 
@@ -21,64 +21,55 @@ class PumpControl(PumpControlBase):
 
         self.__pump: Pump = parent_server.pump
 
-        self.__controller: ControllerPump = None
-        self.direction = "forwards"
+        self.__controller: ControllerPump = self.__pump.controller
         self._status_queue = Queue()
-        self._last_status = "not initialized"
 
-
-
-    """
-    Not needed, handeld by Server
-    """
-    def InitPump(self, ComPort: str, *, metadata: MetadataDict) -> InitPump_Responses:
+    def GetStatus(self, *, metadata: MetadataDict) -> GetStatus_Responses:
         try:
-            self.__pump = Pump(ComPort)
-            self.__controller = self.__pump.controller
-            self.pump_initialized = True
-
-            self._last_status = "pump initialized"
-            self.update_PumpStatus(self._last_status, queue = self._status_queue)
-            return InitPump_Responses()
-
-        except SerialException as e:
+            status = self.__controller.get_status()
+            return GetStatus_Responses()
+        except Exception as e:
             self._last_status = f"error: {str(e)}"
             self.update_PumpStatus(self._last_status, queue=self._status_queue)
-            return InitPump_Responses()
+            return GetStatus_Responses()
 
-    def StartPump(self, Start: bool, *, metadata: MetadataDict) -> StartPump_Responses:
-        if not self.pump_initialized:
+    def StartPump(self, Velocity: int, *, metadata: MetadataDict) -> StartPump_Responses:
+        try:
+            self.__controller.run_motor(Velocity)
+            self._last_status = f"pump started on:{Velocity} steps/s"
+            self.update_PumpStatus(self._last_status, queue=self._status_queue)
+            return StartPump_Responses()
+        except Exception as e:
+            self._last_status = f"error: {str(e)}"
+            self.update_PumpStatus(self._last_status, queue=self._status_queue)
             return StartPump_Responses()
 
-        if not Start:
+    def StopPump(self, *, metadata: MetadataDict) -> StopPump_Responses:
+        try:
+            self.__controller.stop_motor()
             self._last_status = "pump idle"
             self.update_PumpStatus(self._last_status, queue=self._status_queue)
-
-        if self.direction == "forward":
-            print("start pump forwards")
-            self._last_status = "pump running forwards"
-            self.update_PumpStatus(self._last_status, queue=self._status_queue)
-
-        elif self.direction == "backwards":
-            self._last_status = "pump running backwards"
-            self.update_PumpStatus(self._last_status, queue=self._status_queue)
-            print("start pump backwards")
-
-        return StartPump_Responses()
-
-    def StopPump(self, Stop: bool, *, metadata: MetadataDict) -> StopPump_Responses:
-        if not Stop or not self.pump_initialized:
             return StopPump_Responses()
 
-        print("Stop Pump")
-        self._last_status = "pump idle"
-        self.update_PumpStatus(self._last_status, queue=self._status_queue)
-        return StopPump_Responses()
+        except Exception as e:
+            self._last_status = f"error: {str(e)}"
+            self.update_PumpStatus(self._last_status, queue=self._status_queue)
+            return StopPump_Responses()
+
+
+    def SetVoltage(self, Voltage: int, *, metadata: MetadataDict) -> SetVoltage_Responses:
+        try:
+            self.__controller.set_voltage(Voltage)
+            self._last_status = f"updated Voltage to: {Voltage}"
+            self.update_PumpStatus(self._last_status, queue=self._status_queue)
+            return SetVoltage_Responses()
+
+        except Exception as e:
+            self._last_status = f"error: {str(e)}"
+            self.update_PumpStatus(self._last_status, queue=self._status_queue)
+            return SetVoltage_Responses()
 
     def Pump(self, Amount: float, *, metadata: MetadataDict) -> Pump_Responses:
-        if not self.pump_initialized:
-            return Pump_Responses()
-
         try:
             self.__controller.pump_ml(Amount)
             self._last_status = f"pump pumping {Amount}: ml"
@@ -91,9 +82,6 @@ class PumpControl(PumpControlBase):
             return Pump_Responses()
 
     def Suck(self, Amount: float, *, metadata: MetadataDict) -> Suck_Responses:
-        if not self.pump_initialized:
-            return Suck_Responses()
-
         try:
             self.__controller.suck_ml(Amount)
             self._last_status = f"pump sucking {Amount}: ml"
@@ -105,17 +93,29 @@ class PumpControl(PumpControlBase):
             self.update_PumpStatus(self._last_status, queue=self._status_queue)
             return Suck_Responses()
 
-    def Direction(self, Direction: bool, *, metadata: MetadataDict) -> Direction_Responses:
-        if not self.pump_initialized:
-            return Direction_Responses()
+    def SetAcceleration(self, Acceleration: float, *, metadata: MetadataDict) -> SetAcceleration_Responses:
+        try:
+            self.__controller.set_acceleration(int(Acceleration))
+            self._last_status = "updated Acceleration"
+            self.update_PumpStatus(self._last_status, queue=self._status_queue)
+            return SetAcceleration_Responses()
 
-        if Direction:
-            self.direction = "forwards"
+        except Exception as e:
+            self._last_status = f"error: {str(e)}"
+            self.update_PumpStatus(self._last_status, queue=self._status_queue)
+            return SetAcceleration_Responses()
 
-        else:
-            self.direction = "backwards"
+    def SetVelocity(self, Velocity: float, *, metadata: MetadataDict) -> SetVelocity_Responses:
+        try:
+            self.__controller.set_speed(int(Velocity))
+            self._last_status = "updated Velocity"
+            self.update_PumpStatus(self._last_status, queue=self._status_queue)
+            return SetVelocity_Responses()
 
-        return Direction_Responses()
+        except Exception as e:
+            self._last_status = f"error: {str(e)}"
+            self.update_PumpStatus(self._last_status, queue=self._status_queue)
+            return SetVelocity_Responses()
 
     def PumpStatus_on_subscription(self, *, metadata: MetadataDict) -> Optional[Queue[str]]:
         return self._status_queue
